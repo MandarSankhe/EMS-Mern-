@@ -1,11 +1,19 @@
+import React from 'react';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import EmployeeDirectory from './components/EmployeeDirectory';
 
-import './App.css';
+const client = new ApolloClient({
+  uri: 'http://localhost:3000/graphql',
+  cache: new InMemoryCache(),
+});
 
 function App() {
   return (
-    <div className="App">
-      <h1>TEST</h1>
-    </div>
+    <ApolloProvider client={client}>
+      <div className="App">
+        <EmployeeDirectory />
+      </div>
+    </ApolloProvider>
   );
 }
 
