@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function EmployeeCreate({ addEmployee }) {
+function EmployeeCreate() {
   const [employeeData, setEmployeeData] = useState({
     firstName: '',
     lastName: '',
@@ -12,11 +13,12 @@ function EmployeeCreate({ addEmployee }) {
     employeeType: 'FullTime',
   });
 
-  const [errors, setErrors] = useState({});  // State to hold validation errors
+  const [errors, setErrors] = useState({}); // State to hold validation errors
+  const navigate = useNavigate(); // Initialize navigate hook
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setEmployeeData({ 
+    setEmployeeData({
       ...employeeData,
       [name]: name === 'age' ? parseInt(value, 10) : value,
     });
@@ -40,12 +42,12 @@ function EmployeeCreate({ addEmployee }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
-    const response = await fetch('http://localhost:3000/graphql', {
+    const response = await fetch('http://localhost:5000/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -73,7 +75,8 @@ function EmployeeCreate({ addEmployee }) {
     const { data } = await response.json();
     if (data) {
       alert('Employee created successfully');
-      addEmployee(data.createEmployee); // Add the new employee to the list in EmployeeDirectory
+      
+      navigate('/'); // Navigate to the home directory after success
     }
   };
 
@@ -89,6 +92,7 @@ function EmployeeCreate({ addEmployee }) {
               name="firstName"
               className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
               placeholder="First Name"
+              value={employeeData.firstName}
               onChange={handleInputChange}
             />
             {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
@@ -100,6 +104,7 @@ function EmployeeCreate({ addEmployee }) {
               name="lastName"
               className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
               placeholder="Last Name"
+              value={employeeData.lastName}
               onChange={handleInputChange}
             />
             {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
@@ -116,6 +121,7 @@ function EmployeeCreate({ addEmployee }) {
               placeholder="Age"
               min="20"
               max="70"
+              value={employeeData.age}
               onChange={handleInputChange}
             />
             {errors.age && <div className="invalid-feedback">{errors.age}</div>}
@@ -126,6 +132,7 @@ function EmployeeCreate({ addEmployee }) {
               type="date"
               name="dateOfJoining"
               className={`form-control ${errors.dateOfJoining ? 'is-invalid' : ''}`}
+              value={employeeData.dateOfJoining}
               onChange={handleInputChange}
             />
             {errors.dateOfJoining && <div className="invalid-feedback">{errors.dateOfJoining}</div>}
@@ -138,6 +145,7 @@ function EmployeeCreate({ addEmployee }) {
             <select
               name="title"
               className="form-select"
+              value={employeeData.title}
               onChange={handleInputChange}
             >
               <option value="Employee">Employee</option>
@@ -151,6 +159,7 @@ function EmployeeCreate({ addEmployee }) {
             <select
               name="department"
               className="form-select"
+              value={employeeData.department}
               onChange={handleInputChange}
             >
               <option value="IT">IT</option>
@@ -167,6 +176,7 @@ function EmployeeCreate({ addEmployee }) {
             <select
               name="employeeType"
               className="form-select"
+              value={employeeData.employeeType}
               onChange={handleInputChange}
             >
               <option value="FullTime">FullTime</option>

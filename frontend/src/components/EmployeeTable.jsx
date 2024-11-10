@@ -1,25 +1,10 @@
 import React from 'react';
-import { gql, useQuery } from '@apollo/client';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 
-
-
-function EmployeeTable({employees }) {
-
-  // Check if employees array is empty
-  if (employees.length === 0) {
-    return (
-      <div>
-        <h2 className="mb-4">Employee List</h2>
-        <p className="alert alert-warning">No records found</p>
-      </div>
-    );
-  }
-
+const EmployeeTable = ({ employees }) => {
   return (
-    <div>
-      <h2 className="mb-4">Employee List</h2>
-      <table className="table table-bordered table-striped table-hover shadow">
+    <div className="table-responsive">
+      <table className="table table-striped table-bordered mt-4">
         <thead className="thead-dark">
           <tr>
             <th>First Name</th>
@@ -29,26 +14,43 @@ function EmployeeTable({employees }) {
             <th>Title</th>
             <th>Department</th>
             <th>Employee Type</th>
-            <th>Current Status</th>
+            <th>Status</th>
+            <th>Details</th>
           </tr>
         </thead>
         <tbody>
-          {employees.map((employee) => (
-            <tr key={employee.id}>
-              <td>{employee.firstName}</td>
-              <td>{employee.lastName}</td>
-              <td>{employee.age}</td>
-              <td>{new Date(employee.dateOfJoining).toISOString().split('T')[0]}</td>
-              <td>{employee.title}</td>
-              <td>{employee.department}</td>
-              <td>{employee.employeeType}</td>
-              <td>{employee.currentStatus ? 'Working' : 'Retired'}</td>
+          {employees.length === 0 ? (
+            <tr>
+              <td colSpan="9" className="text-center">
+                No employees found
+              </td>
             </tr>
-          ))}
+          ) : (
+            employees.map((employee) => (
+              <tr key={employee.id}>
+                <td>{employee.firstName}</td>
+                <td>{employee.lastName}</td>
+                <td>{employee.age}</td>
+                <td>{new Date(employee.dateOfJoining).toLocaleDateString()}</td>
+                <td>{employee.title}</td>
+                <td>{employee.department}</td>
+                <td>{employee.employeeType}</td>
+                <td>{employee.currentStatus ? 'Working' : 'Retired'}</td>
+                <td>
+                  <Link
+                    to={`/employee/${employee.id}`}
+                    className="btn btn-primary btn-sm"
+                  >
+                    Details
+                  </Link>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>
   );
-}
+};
 
 export default EmployeeTable;

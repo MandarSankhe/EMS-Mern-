@@ -1,5 +1,17 @@
 type Mutation {
   createEmployee(input: EmployeeInput!): Employee
+  updateEmployee(id: ID!, input: UpdateEmployeeInput!): Employee
+  deleteEmployee(id: ID!): Message
+}
+
+type Message {
+  message: String
+}
+
+input UpdateEmployeeInput {
+  title: String
+  department: String
+  currentStatus: Boolean
 }
 
 input EmployeeInput {
@@ -25,5 +37,6 @@ type Employee {
 }
 
 type Query {
-  employees: [Employee]
+  employees(type: String): [Employee]
+  employee(id: ID!): Employee
 }

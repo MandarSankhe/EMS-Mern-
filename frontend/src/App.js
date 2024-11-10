@@ -1,20 +1,21 @@
 import React from 'react';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar';
 import EmployeeDirectory from './components/EmployeeDirectory';
+import EmployeeDetails from './components/EmployeeDetails';
+import EmployeeCreate from './components/EmployeeCreate';
 
-const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql',
-  cache: new InMemoryCache(),
-});
-
-function App() {
+const App = () => {
   return (
-    <ApolloProvider client={client}>
-      <div className="App">
-        <EmployeeDirectory />
-      </div>
-    </ApolloProvider>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<EmployeeDirectory />} />
+        <Route path="/create" element={<EmployeeCreate />} />
+        <Route path="/employee/:id" element={<EmployeeDetails />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

@@ -11,6 +11,15 @@ const cors = require('cors');
 const app = express();
 app.use(cors({}));
 
+app.use((req, res, next) => {
+  try {
+    decodeURIComponent(req.url);
+    next();
+  } catch (e) {
+    res.status(400).send('Malformed URI');
+  }
+});
+
 // Load and merge GraphQL schema files from the graphql directory
 const typesArray = loadFilesSync(path.join(__dirname, './schema'), {
   extensions: ['graphql'],
@@ -27,11 +36,11 @@ const server = new ApolloServer({
 await server.start();
 server.applyMiddleware({ app });
 
-const PORT = process.env.PORT || 3000;
+const PORT = 5000;
 
 // Connect to MongoDB and start the server
 const uri =
-	"mongodb+srv://mandarsankhe:mandar1231@cluster0.2y2ujpq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+	"mongodb+srv://mandarsankhe:mandar1231@cluster0.2y2ujpq.mongodb.net/EMS?retryWrites=true&w=majority&appName=Cluster0";
     
 mongoose
   .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
