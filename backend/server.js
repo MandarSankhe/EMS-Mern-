@@ -11,6 +11,14 @@ const cors = require('cors');
 const app = express();
 app.use(cors({}));
 
+app.use((req, res, next) => {
+  try {
+    decodeURIComponent(req.url);
+    next();
+  } catch (e) {
+    res.status(400).send('Malformed URI');
+  }
+});
 
 // Load and merge GraphQL schema files from the graphql directory
 const typesArray = loadFilesSync(path.join(__dirname, './schema'), {
