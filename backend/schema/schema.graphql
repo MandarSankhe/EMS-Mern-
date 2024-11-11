@@ -14,6 +14,7 @@ input UpdateEmployeeInput {
   currentStatus: Boolean
 }
 
+
 input EmployeeInput {
   firstName: String!
   lastName: String!
