@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const EmployeeSearch = ({ setEmployees }) => {
   const location = useLocation();
-  const navigate = useNavigate(); // To programmatically change the URL
+  const navigate = useNavigate();
   const [selectedType, setSelectedType] = useState('');
 
   // Extract the "type" query parameter from the URL

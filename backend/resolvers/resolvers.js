@@ -1,4 +1,4 @@
-// Ensure you are importing your EmployeeModel correctly
+
 const { EmployeeModel } = require('../models/Employee'); // Path to your model
 
 const resolvers = {

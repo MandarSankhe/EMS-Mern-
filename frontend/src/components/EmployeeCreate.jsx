@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function EmployeeCreate() {
@@ -13,8 +13,8 @@ function EmployeeCreate() {
     employeeType: 'FullTime',
   });
 
-  const [errors, setErrors] = useState({}); // State to hold validation errors
-  const navigate = useNavigate(); // Initialize navigate hook
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -35,23 +35,17 @@ function EmployeeCreate() {
     if (!employeeData.dateOfJoining) newErrors.dateOfJoining = 'Date of Joining is required';
 
     setErrors(newErrors);
-
-    // Form is valid if there are no errors
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     const response = await fetch('http://localhost:5000/graphql', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         query: `
           mutation CreateEmployee($input: EmployeeInput!) {
@@ -75,35 +69,53 @@ function EmployeeCreate() {
     const { data } = await response.json();
     if (data) {
       alert('Employee created successfully');
-      
-      navigate('/'); // Navigate to the home directory after success
+      navigate('/');
     }
   };
 
   return (
-    <div>
-      <h2 className="mb-4">Create New Employee</h2>
+    <div className="container mt-5">
+      {/* Page Header */}
+      <div className="text-center mb-4">
+        <h2 className="fw-bold">Create New Employee</h2>
+        <p className="text-muted">Fill in the details below to add a new employee.</p>
+      </div>
+
+      {/* Back to Home Button */}
+      <div className="mb-4">
+        <button
+          className="btn btn-secondary"
+          onClick={() => navigate('/')} // Navigate to home page
+        >
+          Back to Home
+        </button>
+      </div>
+
+      {/* Form */}
       <form onSubmit={handleSubmit} className="card p-4 shadow-lg">
         <div className="row">
+          {/* First Name */}
           <div className="col-md-6 col-sm-12 mb-3">
-            <label>First Name</label>
+            <label className="form-label">First Name</label>
             <input
               type="text"
               name="firstName"
               className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
-              placeholder="First Name"
+              placeholder="Enter first name"
               value={employeeData.firstName}
               onChange={handleInputChange}
             />
             {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
           </div>
+
+          {/* Last Name */}
           <div className="col-md-6 col-sm-12 mb-3">
-            <label>Last Name</label>
+            <label className="form-label">Last Name</label>
             <input
               type="text"
               name="lastName"
               className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
-              placeholder="Last Name"
+              placeholder="Enter last name"
               value={employeeData.lastName}
               onChange={handleInputChange}
             />
@@ -112,13 +124,14 @@ function EmployeeCreate() {
         </div>
 
         <div className="row">
+          {/* Age */}
           <div className="col-md-6 col-sm-12 mb-3">
-            <label>Age</label>
+            <label className="form-label">Age</label>
             <input
               type="number"
               name="age"
               className={`form-control ${errors.age ? 'is-invalid' : ''}`}
-              placeholder="Age"
+              placeholder="Enter age"
               min="20"
               max="70"
               value={employeeData.age}
@@ -126,8 +139,10 @@ function EmployeeCreate() {
             />
             {errors.age && <div className="invalid-feedback">{errors.age}</div>}
           </div>
+
+          {/* Date of Joining */}
           <div className="col-md-6 col-sm-12 mb-3">
-            <label>Date of Joining</label>
+            <label className="form-label">Date of Joining</label>
             <input
               type="date"
               name="dateOfJoining"
@@ -135,13 +150,16 @@ function EmployeeCreate() {
               value={employeeData.dateOfJoining}
               onChange={handleInputChange}
             />
-            {errors.dateOfJoining && <div className="invalid-feedback">{errors.dateOfJoining}</div>}
+            {errors.dateOfJoining && (
+              <div className="invalid-feedback">{errors.dateOfJoining}</div>
+            )}
           </div>
         </div>
 
         <div className="row">
+          {/* Title */}
           <div className="col-md-6 col-sm-12 mb-3">
-            <label>Title</label>
+            <label className="form-label">Title</label>
             <select
               name="title"
               className="form-select"
@@ -154,8 +172,10 @@ function EmployeeCreate() {
               <option value="VP">VP</option>
             </select>
           </div>
+
+          {/* Department */}
           <div className="col-md-6 col-sm-12 mb-3">
-            <label>Department</label>
+            <label className="form-label">Department</label>
             <select
               name="department"
               className="form-select"
@@ -171,25 +191,29 @@ function EmployeeCreate() {
         </div>
 
         <div className="row">
+          {/* Employee Type */}
           <div className="col-md-6 col-sm-12 mb-4">
-            <label>Employee Type</label>
+            <label className="form-label">Employee Type</label>
             <select
               name="employeeType"
               className="form-select"
               value={employeeData.employeeType}
               onChange={handleInputChange}
             >
-              <option value="FullTime">FullTime</option>
-              <option value="PartTime">PartTime</option>
+              <option value="FullTime">Full-Time</option>
+              <option value="PartTime">Part-Time</option>
               <option value="Contract">Contract</option>
               <option value="Seasonal">Seasonal</option>
             </select>
           </div>
         </div>
 
-        <button type="submit" className="btn btn-primary">
-          Create Employee
-        </button>
+        {/* Submit Button */}
+        <div className="text-center">
+          <button type="submit" className="btn btn-primary btn-lg px-5">
+            Create Employee
+          </button>
+        </div>
       </form>
     </div>
   );

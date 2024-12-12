@@ -1,11 +1,38 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link for navigation
+import { Link } from 'react-router-dom';
 
-const EmployeeTable = ({ employees }) => {
+const EmployeeTable = ({ employees, onDeleteEmployee }) => {
+  const handleDelete = (employeeId) => {
+    if (window.confirm('Are you sure you want to delete this employee?')) {
+      fetch('http://localhost:5000/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: `
+            mutation DeleteEmployee($id: ID!) {
+              deleteEmployee(id: $id) {
+                message
+              }
+            }
+          `,
+          variables: { id: employeeId },
+        }),
+      })
+        .then((res) => res.json())
+        .then(() => {
+          // Call the onDeleteEmployee function to refresh the list
+          onDeleteEmployee(employeeId);
+        })
+        .catch((err) => console.error('Error deleting employee:', err));
+    }
+  };
+
   return (
     <div className="table-responsive">
-      <table className="table table-striped table-bordered mt-4">
-        <thead className="thead-dark">
+      <table className="table table-striped table-hover table-bordered mt-4">
+        <thead className="table-dark">
           <tr>
             <th>First Name</th>
             <th>Last Name</th>
@@ -15,7 +42,7 @@ const EmployeeTable = ({ employees }) => {
             <th>Department</th>
             <th>Employee Type</th>
             <th>Status</th>
-            <th>Details</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -35,14 +62,30 @@ const EmployeeTable = ({ employees }) => {
                 <td>{employee.title}</td>
                 <td>{employee.department}</td>
                 <td>{employee.employeeType}</td>
-                <td>{employee.currentStatus ? 'Working' : 'Retired'}</td>
                 <td>
-                  <Link
-                    to={`/employee/${employee.id}`}
-                    className="btn btn-primary btn-sm"
+                  <span
+                    className={`badge ${
+                      employee.currentStatus ? 'bg-success' : 'bg-danger'
+                    }`}
                   >
-                    Details
-                  </Link>
+                    {employee.currentStatus ? 'Working' : 'Retired'}
+                  </span>
+                </td>
+                <td>
+                  <div className="d-flex">
+                    <Link
+                      to={`/employee/${employee.id}`}
+                      className="btn btn-sm btn-primary me-2"
+                    >
+                      Details
+                    </Link>
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={() => handleDelete(employee.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))

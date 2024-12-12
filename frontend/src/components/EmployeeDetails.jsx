@@ -111,19 +111,34 @@ const EmployeeDetails = () => {
       });
   };
 
-  if (!employee) return (
-    <div className="text-center mt-5">
-      <div className="spinner-border" role="status">
-        <span className="visually-hidden">Loading...</span>
+  if (!employee)
+    return (
+      <div className="text-center mt-5">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <h5 className="mt-3">Loading Employee Details...</h5>
       </div>
-    </div>
-  );
+    );
 
   return (
     <div className="container mt-5">
+      {/* Back to Home Button */}
+      <div className="mb-4">
+        <button
+          className="btn btn-secondary"
+          onClick={() => navigate('/')} // Navigate to home page
+        >
+          Back to Home
+        </button>
+      </div>
+      {/* Employee Details Card */}
       <div className="card shadow-lg">
         <div className="card-header bg-primary text-white text-center">
-          <h3>{employee.firstName} {employee.lastName}</h3>
+          <h2 className="fw-bold">
+            {employee.firstName} {employee.lastName}
+          </h2>
+          <p className="mb-0">{employee.title}</p>
         </div>
         <div className="card-body">
           {isEditing ? (
@@ -172,25 +187,57 @@ const EmployeeDetails = () => {
                   </select>
                 </div>
               </div>
-              <button type="button" className="btn btn-success me-2" onClick={handleSave}>
+              <button
+                type="button"
+                className="btn btn-success me-2"
+                onClick={handleSave}
+              >
                 Save
               </button>
-              <button type="button" className="btn btn-secondary" onClick={() => setIsEditing(false)}>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setIsEditing(false)}
+              >
                 Cancel
               </button>
             </form>
           ) : (
             <div>
-              <p><strong>First Name:</strong> {employee.firstName}</p>
-              <p><strong>Last Name:</strong> {employee.lastName}</p>
-              <p><strong>Age:</strong> {employee.age}</p>
-              <p><strong>Date of Joining:</strong> {new Date(employee.dateOfJoining).toLocaleDateString()}</p>
-              <p><strong>Title:</strong> {employee.title}</p>
-              <p><strong>Department:</strong> {employee.department}</p>
-              <p><strong>Employee Type:</strong> {employee.employeeType}</p>
-              <p><strong>Status:</strong> {employee.currentStatus ? 'Working' : 'Retired'}</p>
-              <div className="d-flex justify-content-between">
-                <button className="btn btn-warning" onClick={handleEdit}>
+              <div className="row">
+                <div className="col-md-6">
+                  <p>
+                    <strong>First Name:</strong> {employee.firstName}
+                  </p>
+                  <p>
+                    <strong>Last Name:</strong> {employee.lastName}
+                  </p>
+                  <p>
+                    <strong>Age:</strong> {employee.age}
+                  </p>
+                  <p>
+                    <strong>Date of Joining:</strong>{' '}
+                    {new Date(employee.dateOfJoining).toLocaleDateString()}
+                  </p>
+                </div>
+                <div className="col-md-6">
+                  <p>
+                    <strong>Title:</strong> {employee.title}
+                  </p>
+                  <p>
+                    <strong>Department:</strong> {employee.department}
+                  </p>
+                  <p>
+                    <strong>Employee Type:</strong> {employee.employeeType}
+                  </p>
+                  <p>
+                    <strong>Status:</strong>{' '}
+                    {employee.currentStatus ? 'Working' : 'Retired'}
+                  </p>
+                </div>
+              </div>
+              <div className="d-flex justify-content-center mt-4">
+                <button className="btn btn-warning me-3" onClick={handleEdit}>
                   Edit
                 </button>
                 <button
@@ -204,7 +251,10 @@ const EmployeeDetails = () => {
           )}
         </div>
         <div className="card-footer text-center">
-          <button className="btn btn-secondary" onClick={() => navigate('/')}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => navigate('/')}
+          >
             Back to Employee List
           </button>
         </div>
@@ -212,8 +262,8 @@ const EmployeeDetails = () => {
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="modal show d-block" tabIndex="-1" role="dialog">
-          <div className="modal-dialog" role="document">
+        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+          <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Confirm Deletion</h5>
