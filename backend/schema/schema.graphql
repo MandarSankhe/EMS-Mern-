@@ -18,26 +18,35 @@ input UpdateEmployeeInput {
 input EmployeeInput {
   firstName: String!
   lastName: String!
-  age: Int!
   dateOfJoining: String!
   title: String!
   department: String!
   employeeType: String!
+  dateOfBirth: String!
 }
 
 type Employee {
   id: ID!
   firstName: String!
   lastName: String!
-  age: Int!
   dateOfJoining: String!
   title: String!
   department: String!
   employeeType: String!
   currentStatus: Boolean!
+  dateOfBirth: String!
+  retirementDate: String!
+  timeUntilRetirement: TimeUntilRetirement
+}
+
+type TimeUntilRetirement {
+  years: Int
+  months: Int
+  days: Int
 }
 
 type Query {
   employees(type: String): [Employee]
   employee(id: ID!): Employee
+  employeesRetiring(withinMonths: Int!, employeeType: String!): [Employee]
 }

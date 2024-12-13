@@ -16,7 +16,7 @@ const EmployeeSearch = ({ setEmployees }) => {
 
   // Fetch employees when "type" changes
   useEffect(() => {
-    fetch('http://localhost:5000/graphql', {
+    fetch('http://localhost:3000/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -28,12 +28,12 @@ const EmployeeSearch = ({ setEmployees }) => {
               id
               firstName
               lastName
-              age
               dateOfJoining
               title
               department
               employeeType
-              currentStatus
+              currentStatus,
+              dateOfBirth
             }
           }
         `,

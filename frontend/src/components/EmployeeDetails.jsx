@@ -15,7 +15,7 @@ const EmployeeDetails = () => {
   });
 
   React.useEffect(() => {
-    fetch('http://localhost:5000/graphql', {
+    fetch('http://localhost:3000/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,12 +27,18 @@ const EmployeeDetails = () => {
               id
               firstName
               lastName
-              age
               dateOfJoining
               title
               department
               employeeType
-              currentStatus
+              currentStatus,
+              dateOfBirth,
+              retirementDate,
+              timeUntilRetirement {
+                years
+                months
+                days
+              }
             }
           }
         `,
@@ -61,7 +67,7 @@ const EmployeeDetails = () => {
   };
 
   const handleSave = () => {
-    fetch('http://localhost:5000/graphql', {
+    fetch('http://localhost:3000/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -88,7 +94,7 @@ const EmployeeDetails = () => {
   };
 
   const handleDelete = () => {
-    fetch('http://localhost:5000/graphql', {
+    fetch('http://localhost:3000/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -110,17 +116,7 @@ const EmployeeDetails = () => {
         navigate('/'); // Redirect after deletion
       });
   };
-
-  if (!employee)
-    return (
-      <div className="text-center mt-5">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-        <h5 className="mt-3">Loading Employee Details...</h5>
-      </div>
-    );
-
+  
   return (
     <div className="container mt-5">
       {/* Back to Home Button */}
@@ -211,9 +207,6 @@ const EmployeeDetails = () => {
                   </p>
                   <p>
                     <strong>Last Name:</strong> {employee.lastName}
-                  </p>
-                  <p>
-                    <strong>Age:</strong> {employee.age}
                   </p>
                   <p>
                     <strong>Date of Joining:</strong>{' '}

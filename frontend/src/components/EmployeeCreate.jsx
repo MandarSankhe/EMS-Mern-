@@ -6,7 +6,7 @@ function EmployeeCreate() {
   const [employeeData, setEmployeeData] = useState({
     firstName: '',
     lastName: '',
-    age: '',
+    dateOfBirth: '',
     dateOfJoining: '',
     title: 'Employee',
     department: 'IT',
@@ -20,7 +20,7 @@ function EmployeeCreate() {
     const { name, value } = e.target;
     setEmployeeData({
       ...employeeData,
-      [name]: name === 'age' ? parseInt(value, 10) : value,
+      [name]: value,
     });
   };
 
@@ -30,8 +30,15 @@ function EmployeeCreate() {
     // Validation rules
     if (!employeeData.firstName) newErrors.firstName = 'First Name is required';
     if (!employeeData.lastName) newErrors.lastName = 'Last Name is required';
-    if (employeeData.age < 20 || employeeData.age > 70)
-      newErrors.age = 'Age must be between 20 and 70';
+    if (!employeeData.dateOfBirth) {
+      newErrors.dateOfBirth = 'Date of Birth is required';
+    } else {
+      const dob = new Date(employeeData.dateOfBirth);
+      const age = new Date().getFullYear() - dob.getFullYear();
+      if (age < 20 || age > 70) {
+        newErrors.dateOfBirth = 'Age must be between 20 and 70';
+      }
+    }
     if (!employeeData.dateOfJoining) newErrors.dateOfJoining = 'Date of Joining is required';
 
     setErrors(newErrors);
@@ -43,7 +50,7 @@ function EmployeeCreate() {
 
     if (!validateForm()) return;
 
-    const response = await fetch('http://localhost:5000/graphql', {
+    const response = await fetch('http://localhost:3000/graphql', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -53,7 +60,7 @@ function EmployeeCreate() {
               id
               firstName
               lastName
-              age
+              dateOfBirth
               dateOfJoining
               title
               department
@@ -124,20 +131,17 @@ function EmployeeCreate() {
         </div>
 
         <div className="row">
-          {/* Age */}
+          {/* Date of Birth */}
           <div className="col-md-6 col-sm-12 mb-3">
-            <label className="form-label">Age</label>
+            <label className="form-label">Date of Birth</label>
             <input
-              type="number"
-              name="age"
-              className={`form-control ${errors.age ? 'is-invalid' : ''}`}
-              placeholder="Enter age"
-              min="20"
-              max="70"
-              value={employeeData.age}
+              type="date"
+              name="dateOfBirth"
+              className={`form-control ${errors.dateOfBirth ? 'is-invalid' : ''}`}
+              value={employeeData.dateOfBirth}
               onChange={handleInputChange}
             />
-            {errors.age && <div className="invalid-feedback">{errors.age}</div>}
+            {errors.dateOfBirth && <div className="invalid-feedback">{errors.dateOfBirth}</div>}
           </div>
 
           {/* Date of Joining */}
