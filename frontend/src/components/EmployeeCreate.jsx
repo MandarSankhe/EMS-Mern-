@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Card,
+  Alert,
+} from 'react-bootstrap';
 
 function EmployeeCreate() {
   const [employeeData, setEmployeeData] = useState({
@@ -27,7 +35,6 @@ function EmployeeCreate() {
   const validateForm = () => {
     const newErrors = {};
 
-    // Validation rules
     if (!employeeData.firstName) newErrors.firstName = 'First Name is required';
     if (!employeeData.lastName) newErrors.lastName = 'Last Name is required';
     if (!employeeData.dateOfBirth) {
@@ -81,145 +88,149 @@ function EmployeeCreate() {
   };
 
   return (
-    <div className="container mt-5">
-      {/* Page Header */}
+    <Container className="mt-5">
       <div className="text-center mb-4">
-        <h2 className="fw-bold">Create New Employee</h2>
+        <h2>Create New Employee</h2>
         <p className="text-muted">Fill in the details below to add a new employee.</p>
       </div>
 
-      {/* Back to Home Button */}
-      <div className="mb-4">
-        <button
-          className="btn btn-secondary"
-          onClick={() => navigate('/')} // Navigate to home page
-        >
-          Back to Home
-        </button>
-      </div>
+      <Button
+        variant="secondary"
+        className="mb-4"
+        onClick={() => navigate('/')}
+      >
+        Back to Home
+      </Button>
 
-      {/* Form */}
-      <form onSubmit={handleSubmit} className="card p-4 shadow-lg">
-        <div className="row">
-          {/* First Name */}
-          <div className="col-md-6 col-sm-12 mb-3">
-            <label className="form-label">First Name</label>
-            <input
-              type="text"
-              name="firstName"
-              className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
-              placeholder="Enter first name"
-              value={employeeData.firstName}
-              onChange={handleInputChange}
-            />
-            {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
+      <Card className="p-4 shadow-lg">
+        <Form onSubmit={handleSubmit}>
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label>First Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="firstName"
+                  placeholder="Enter first name"
+                  value={employeeData.firstName}
+                  onChange={handleInputChange}
+                  isInvalid={!!errors.firstName}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.firstName}
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="lastName"
+                  placeholder="Enter last name"
+                  value={employeeData.lastName}
+                  onChange={handleInputChange}
+                  isInvalid={!!errors.lastName}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.lastName}
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label>Date of Birth</Form.Label>
+                <Form.Control
+                  type="date"
+                  name="dateOfBirth"
+                  value={employeeData.dateOfBirth}
+                  onChange={handleInputChange}
+                  isInvalid={!!errors.dateOfBirth}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.dateOfBirth}
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label>Date of Joining</Form.Label>
+                <Form.Control
+                  type="date"
+                  name="dateOfJoining"
+                  value={employeeData.dateOfJoining}
+                  onChange={handleInputChange}
+                  isInvalid={!!errors.dateOfJoining}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.dateOfJoining}
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label>Title</Form.Label>
+                <Form.Select
+                  name="title"
+                  value={employeeData.title}
+                  onChange={handleInputChange}
+                >
+                  <option value="Employee">Employee</option>
+                  <option value="Manager">Manager</option>
+                  <option value="Director">Director</option>
+                  <option value="VP">VP</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label>Department</Form.Label>
+                <Form.Select
+                  name="department"
+                  value={employeeData.department}
+                  onChange={handleInputChange}
+                >
+                  <option value="IT">IT</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="HR">HR</option>
+                  <option value="Engineering">Engineering</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label>Employee Type</Form.Label>
+                <Form.Select
+                  name="employeeType"
+                  value={employeeData.employeeType}
+                  onChange={handleInputChange}
+                >
+                  <option value="FullTime">Full-Time</option>
+                  <option value="PartTime">Part-Time</option>
+                  <option value="Contract">Contract</option>
+                  <option value="Seasonal">Seasonal</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <div className="text-center">
+            <Button type="submit" variant="primary" size="lg">
+              Create Employee
+            </Button>
           </div>
-
-          {/* Last Name */}
-          <div className="col-md-6 col-sm-12 mb-3">
-            <label className="form-label">Last Name</label>
-            <input
-              type="text"
-              name="lastName"
-              className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
-              placeholder="Enter last name"
-              value={employeeData.lastName}
-              onChange={handleInputChange}
-            />
-            {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
-          </div>
-        </div>
-
-        <div className="row">
-          {/* Date of Birth */}
-          <div className="col-md-6 col-sm-12 mb-3">
-            <label className="form-label">Date of Birth</label>
-            <input
-              type="date"
-              name="dateOfBirth"
-              className={`form-control ${errors.dateOfBirth ? 'is-invalid' : ''}`}
-              value={employeeData.dateOfBirth}
-              onChange={handleInputChange}
-            />
-            {errors.dateOfBirth && <div className="invalid-feedback">{errors.dateOfBirth}</div>}
-          </div>
-
-          {/* Date of Joining */}
-          <div className="col-md-6 col-sm-12 mb-3">
-            <label className="form-label">Date of Joining</label>
-            <input
-              type="date"
-              name="dateOfJoining"
-              className={`form-control ${errors.dateOfJoining ? 'is-invalid' : ''}`}
-              value={employeeData.dateOfJoining}
-              onChange={handleInputChange}
-            />
-            {errors.dateOfJoining && (
-              <div className="invalid-feedback">{errors.dateOfJoining}</div>
-            )}
-          </div>
-        </div>
-
-        <div className="row">
-          {/* Title */}
-          <div className="col-md-6 col-sm-12 mb-3">
-            <label className="form-label">Title</label>
-            <select
-              name="title"
-              className="form-select"
-              value={employeeData.title}
-              onChange={handleInputChange}
-            >
-              <option value="Employee">Employee</option>
-              <option value="Manager">Manager</option>
-              <option value="Director">Director</option>
-              <option value="VP">VP</option>
-            </select>
-          </div>
-
-          {/* Department */}
-          <div className="col-md-6 col-sm-12 mb-3">
-            <label className="form-label">Department</label>
-            <select
-              name="department"
-              className="form-select"
-              value={employeeData.department}
-              onChange={handleInputChange}
-            >
-              <option value="IT">IT</option>
-              <option value="Marketing">Marketing</option>
-              <option value="HR">HR</option>
-              <option value="Engineering">Engineering</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="row">
-          {/* Employee Type */}
-          <div className="col-md-6 col-sm-12 mb-4">
-            <label className="form-label">Employee Type</label>
-            <select
-              name="employeeType"
-              className="form-select"
-              value={employeeData.employeeType}
-              onChange={handleInputChange}
-            >
-              <option value="FullTime">Full-Time</option>
-              <option value="PartTime">Part-Time</option>
-              <option value="Contract">Contract</option>
-              <option value="Seasonal">Seasonal</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Submit Button */}
-        <div className="text-center">
-          <button type="submit" className="btn btn-primary btn-lg px-5">
-            Create Employee
-          </button>
-        </div>
-      </form>
-    </div>
+        </Form>
+      </Card>
+    </Container>
   );
 }
 

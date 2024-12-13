@@ -13,10 +13,12 @@ const resolvers = {
         throw new Error('Failed to fetch employees');
       }
     },
+
     employee: async (_, { id }) => {
       try {
         // Fetch the employee by ID
         const employee = await EmployeeModel.findById(id);
+        console.log(employee); // Debugging log
     
         if (!employee) {
           throw new Error('Employee not found');
@@ -41,16 +43,15 @@ const resolvers = {
           (timeDiff % (30 * 24 * 60 * 60 * 1000)) / (24 * 60 * 60 * 1000)
         );
     
-        // Return the result as a single object under the `employees` key
+        // Return the employee object with additional fields
         return {
-          employees: {
-            ...employee.toObject(),
-            retirementDate: retirementDate.toISOString().split('T')[0],
-            timeUntilRetirement: {
-              years: yearsLeft >= 0 ? yearsLeft : 0,
-              months: monthsLeft >= 0 ? monthsLeft : 0,
-              days: daysLeft >= 0 ? daysLeft : 0,
-            },
+          ...employee.toObject(),
+          id: employee._id.toString(),
+          retirementDate: retirementDate.toISOString().split('T')[0],
+          timeUntilRetirement: {
+            years: yearsLeft >= 0 ? yearsLeft : 0,
+            months: monthsLeft >= 0 ? monthsLeft : 0,
+            days: daysLeft >= 0 ? daysLeft : 0,
           },
         };
       } catch (error) {
@@ -58,6 +59,7 @@ const resolvers = {
         throw new Error('Failed to fetch employee details');
       }
     },
+    
         
     employeesRetiring: async (_, { withinMonths = 6, employeeType }) => {
       console.log('test', { employeeType });

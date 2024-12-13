@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import EmployeeTable from './EmployeeTable';
 import EmployeeSearch from './EmployeeSearch'; // Assuming you have this component for filtering employees
 
@@ -53,18 +54,26 @@ const EmployeeDirectory = () => {
   return (
     <>
       {/* Banner Section */}
-      <div className="bg-primary text-white py-5 mb-4 shadow">
-        <div className="container text-center">
+      <Container fluid className="bg-primary text-white text-center py-5 mb-4">
+        <Container>
           <h1 className="fw-bold">Employee Management System</h1>
           <p className="lead">Manage and track your workforce effectively</p>
-        </div>
-      </div>
+        </Container>
+      </Container>
 
       {/* Main Content Section */}
-      <div className="container">
-        <EmployeeSearch setEmployees={setEmployees} />
-        <EmployeeTable employees={employees} onDeleteEmployee={handleDeleteEmployee} />
-      </div>
+      <Container>
+        <Row className="mb-3">
+          <Col>
+            <EmployeeSearch setEmployees={setEmployees} />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <EmployeeTable employees={employees} onDeleteEmployee={handleDeleteEmployee} />
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 };

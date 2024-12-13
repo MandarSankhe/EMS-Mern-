@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import EmployeeTable from './EmployeeTable';
+import { Container, Button, Alert, Form } from 'react-bootstrap';
 
 const UpcomingRetirement = () => {
   const [retiringEmployees, setRetiringEmployees] = useState([]);
@@ -14,7 +15,6 @@ const UpcomingRetirement = () => {
 
     // Default to "All" if no valid employeeType is provided
     const employeeType = searchParams.get('employeeType') || 'All';
-    
 
     fetch('http://localhost:3000/graphql', {
       method: 'POST',
@@ -32,7 +32,11 @@ const UpcomingRetirement = () => {
                 employeeType
                 currentStatus
                 retirementDate
-                timeUntilRetirement,
+                timeUntilRetirement {
+                  years
+                  months
+                  days
+                }
                 dateOfJoining
             }
         }
@@ -69,19 +73,18 @@ const UpcomingRetirement = () => {
     <>
       {/* Banner Section */}
       <div className="bg-primary text-white py-5 mb-4 shadow">
-        <div className="container text-center">
+        <Container className="text-center">
           <h1 className="fw-bold">Upcoming Retirements</h1>
           <p className="text-muted">Monitor employees retiring in the next 6 months</p>
-        </div>
+        </Container>
       </div>
 
       {/* Main Content Section */}
-      <div className="container">
+      <Container>
         <div className="mb-3">
-          <label htmlFor="employeeTypeFilter" className="form-label">Filter by Employee Type:</label>
-          <select 
+          <Form.Label htmlFor="employeeTypeFilter">Filter by Employee Type:</Form.Label>
+          <Form.Select 
             id="employeeTypeFilter" 
-            className="form-select" 
             onChange={handleEmployeeTypeFilterChange}
           >
             <option value="All">All</option>
@@ -89,14 +92,14 @@ const UpcomingRetirement = () => {
             <option value="PartTime">Part Time</option>
             <option value="Contract">Contract</option>
             <option value="Seasonal">Seasonal</option>
-          </select>
+          </Form.Select>
         </div>
 
         {/* Display error message if there's an error */}
         {error && (
-          <div className="alert alert-danger">
+          <Alert variant="danger">
             {error}
-          </div>
+          </Alert>
         )}
 
         {/* Display retiring employees if available */}
@@ -111,14 +114,14 @@ const UpcomingRetirement = () => {
           />
         ) : (
           !error && (
-            <div className="alert alert-warning">No employees retiring in the next 6 months.</div>
+            <Alert variant="warning">No employees retiring in the next 6 months.</Alert>
           )
         )}
 
-        <button className="btn btn-primary mt-3" onClick={() => navigate('/employees')}>
+        <Button variant="primary" className="mt-3" onClick={() => navigate('/')}>
           Back to Employees
-        </button>
-      </div>
+        </Button>
+      </Container>
     </>
   );
 };

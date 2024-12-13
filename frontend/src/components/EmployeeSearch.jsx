@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Form, Container } from 'react-bootstrap';
 
 const EmployeeSearch = ({ setEmployees }) => {
   const location = useLocation();
@@ -63,20 +64,20 @@ const EmployeeSearch = ({ setEmployees }) => {
   };
 
   return (
-    <div className="mb-4">
+    <Container className="mb-4">
       <h2>Filter Employees</h2>
-      <select
+      <Form.Select
         value={selectedType}
         onChange={handleTypeChange}
-        className="form-select w-50 mx-auto"
+        className="w-50 mx-auto"
       >
         <option value="">All</option>
         <option value="FullTime">Full-Time</option>
         <option value="PartTime">Part-Time</option>
         <option value="Contract">Contract</option>
         <option value="Seasonal">Seasonal</option>
-      </select>
-    </div>
+      </Form.Select>
+    </Container>
   );
 };
 

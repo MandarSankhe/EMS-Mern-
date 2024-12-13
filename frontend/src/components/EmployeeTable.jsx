@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Table, Badge, Button, Modal } from 'react-bootstrap';
 
 const EmployeeTable = ({ employees, onDeleteEmployee }) => {
-  const handleDelete = (employeeId) => {
-    if (window.confirm("Are you sure you want to delete this employee?")) {
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+
+  const handleDeleteClick = (employeeId) => {
+    setSelectedEmployeeId(employeeId);
+    setModalMessage("Are you sure you want to delete this employee?");
+    setShowModal(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedEmployeeId) {
       fetch("http://localhost:3000/graphql", {
         method: "POST",
         headers: {
@@ -17,7 +28,7 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
               }
             }
           `,
-          variables: { id: employeeId },
+          variables: { id: selectedEmployeeId },
         }),
       })
         .then((res) => {
@@ -30,23 +41,22 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
           const message = data?.data?.deleteEmployee?.message;
 
           if (message === "CAN’T DELETE EMPLOYEE – STATUS ACTIVE") {
-            alert(message); // Show the message to the user
+            setModalMessage(message);
           } else if (message === "Employee deleted successfully") {
-            alert(message); // Show success message
-            onDeleteEmployee(employeeId); // Refresh the list
+            setModalMessage(message);
+            onDeleteEmployee(selectedEmployeeId);
           } else {
-            alert(message || "An unknown error occurred.");
+            setModalMessage(message || "An unknown error occurred.");
           }
         })
         .catch((err) => {
           console.error("Error deleting employee:", err);
-          alert("An error occurred while deleting the employee.");
+          setModalMessage("An error occurred while deleting the employee.");
         });
     }
   };
 
   const calculateAge = (dateOfBirth) => {
-    console.log(dateOfBirth)
     const birthDate = new Date(dateOfBirth);
     const today = new Date();
     const age = today.getFullYear() - birthDate.getFullYear();
@@ -60,7 +70,7 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
 
   return (
     <div className="table-responsive">
-      <table className="table table-striped table-hover table-bordered mt-4">
+      <Table striped hover bordered className="mt-4">
         <thead className="table-dark">
           <tr>
             <th>First Name</th>
@@ -94,35 +104,55 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
                 <td>{employee.department}</td>
                 <td>{employee.employeeType}</td>
                 <td>
-                  <span
-                    className={`badge ${
-                      employee.currentStatus ? 'bg-success' : 'bg-danger'
-                    }`}
-                  >
+                  <Badge bg={employee.currentStatus ? 'success' : 'danger'}>
                     {employee.currentStatus ? 'Working' : 'Retired'}
-                  </span>
+                  </Badge>
                 </td>
                 <td>
                   <div className="d-flex">
                     <Link
                       to={`/employee/${employee.id}`}
-                      className="btn btn-sm btn-primary me-2"
+                      className="me-2 btn btn-primary btn-sm"
                     >
                       Details
                     </Link>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={() => handleDelete(employee.id)}
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => handleDeleteClick(employee.id)}
                     >
                       Delete
-                    </button>
+                    </Button>
                   </div>
                 </td>
               </tr>
             ))
           )}
         </tbody>
-      </table>
+      </Table>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Action</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{modalMessage}</Modal.Body>
+        <Modal.Footer>
+          {modalMessage === "Are you sure you want to delete this employee?" ? (
+            <>
+              <Button variant="danger" onClick={handleConfirmDelete}>
+                Confirm
+              </Button>
+              <Button variant="secondary" onClick={() => setShowModal(false)}>
+                Cancel
+              </Button>
+            </>
+          ) : (
+            <Button variant="secondary" onClick={() => setShowModal(false)}>
+              Close
+            </Button>
+          )}
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
