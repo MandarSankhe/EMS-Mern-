@@ -15,7 +15,7 @@ const EmployeeDetails = () => {
   });
 
   React.useEffect(() => {
-    fetch('http://localhost:5000/graphql', {
+    fetch('http://localhost:3000/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,12 +27,12 @@ const EmployeeDetails = () => {
               id
               firstName
               lastName
-              age
               dateOfJoining
               title
               department
               employeeType
-              currentStatus
+              currentStatus,
+              dateOfBirth
             }
           }
         `,
@@ -61,7 +61,7 @@ const EmployeeDetails = () => {
   };
 
   const handleSave = () => {
-    fetch('http://localhost:5000/graphql', {
+    fetch('http://localhost:3000/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ const EmployeeDetails = () => {
   };
 
   const handleDelete = () => {
-    fetch('http://localhost:5000/graphql', {
+    fetch('http://localhost:3000/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -211,9 +211,6 @@ const EmployeeDetails = () => {
                   </p>
                   <p>
                     <strong>Last Name:</strong> {employee.lastName}
-                  </p>
-                  <p>
-                    <strong>Age:</strong> {employee.age}
                   </p>
                   <p>
                     <strong>Date of Joining:</strong>{' '}

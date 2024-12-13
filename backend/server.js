@@ -28,7 +28,7 @@ const server = new ApolloServer({
 await server.start();
 server.applyMiddleware({ app });
 
-const PORT = 5000;
+const PORT = 3000;
 
 // Connect to MongoDB and start the server
 const uri =

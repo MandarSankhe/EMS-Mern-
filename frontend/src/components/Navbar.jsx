@@ -25,6 +25,9 @@ const Navbar = () => (
           <li className="nav-item">
             <Link className="nav-link" to="/create">Add Employee</Link>
           </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/upcoming-retirement">Upcoming Retirement</Link>
+          </li>
         </ul>
       </div>
     </div>

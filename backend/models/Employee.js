@@ -9,6 +9,7 @@ const employeeSchema = new mongoose.Schema({
   department: { type: String, required: true },
   employeeType: { type: String, required: true },
   currentStatus: { type: Boolean, default: true },
+  dateOfBirth: { type: String, required: true },
 });
 
 const EmployeeModel = mongoose.model('Employee', employeeSchema);

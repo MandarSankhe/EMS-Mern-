@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 
 const EmployeeTable = ({ employees, onDeleteEmployee }) => {
   const handleDelete = (employeeId) => {
-    if (window.confirm('Are you sure you want to delete this employee?')) {
-      fetch('http://localhost:5000/graphql', {
-        method: 'POST',
+    if (window.confirm("Are you sure you want to delete this employee?")) {
+      fetch("http://localhost:3000/graphql", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           query: `
@@ -20,13 +20,42 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
           variables: { id: employeeId },
         }),
       })
-        .then((res) => res.json())
-        .then(() => {
-          // Call the onDeleteEmployee function to refresh the list
-          onDeleteEmployee(employeeId);
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`Network error: ${res.statusText}`);
+          }
+          return res.json();
         })
-        .catch((err) => console.error('Error deleting employee:', err));
+        .then((data) => {
+          const message = data?.data?.deleteEmployee?.message;
+
+          if (message === "CAN’T DELETE EMPLOYEE – STATUS ACTIVE") {
+            alert(message); // Show the message to the user
+          } else if (message === "Employee deleted successfully") {
+            alert(message); // Show success message
+            onDeleteEmployee(employeeId); // Refresh the list
+          } else {
+            alert(message || "An unknown error occurred.");
+          }
+        })
+        .catch((err) => {
+          console.error("Error deleting employee:", err);
+          alert("An error occurred while deleting the employee.");
+        });
     }
+  };
+
+  const calculateAge = (dateOfBirth) => {
+    console.log(dateOfBirth)
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      return age - 1; // Adjust for an incomplete year
+    }
+    return age;
   };
 
   return (
@@ -36,6 +65,7 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
           <tr>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>Date of Birth</th>
             <th>Age</th>
             <th>Date of Joining</th>
             <th>Title</th>
@@ -48,7 +78,7 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
         <tbody>
           {employees.length === 0 ? (
             <tr>
-              <td colSpan="9" className="text-center">
+              <td colSpan="10" className="text-center">
                 No employees found
               </td>
             </tr>
@@ -57,7 +87,8 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
               <tr key={employee.id}>
                 <td>{employee.firstName}</td>
                 <td>{employee.lastName}</td>
-                <td>{employee.age}</td>
+                <td>{new Date(employee.dateOfBirth).toLocaleDateString()}</td>
+                <td>{calculateAge(employee.dateOfBirth)}</td>
                 <td>{new Date(employee.dateOfJoining).toLocaleDateString()}</td>
                 <td>{employee.title}</td>
                 <td>{employee.department}</td>

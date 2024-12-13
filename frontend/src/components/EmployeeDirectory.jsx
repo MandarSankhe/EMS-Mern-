@@ -7,7 +7,7 @@ const EmployeeDirectory = () => {
 
   // Fetch employees from the API
   const fetchEmployees = () => {
-    fetch('http://localhost:5000/graphql', {
+    fetch('http://localhost:3000/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -19,12 +19,12 @@ const EmployeeDirectory = () => {
               id
               firstName
               lastName
-              age
               dateOfJoining
               title
               department
               employeeType
-              currentStatus
+              currentStatus,
+              dateOfBirth
             }
           }
         `,

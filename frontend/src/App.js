@@ -4,6 +4,8 @@ import Navbar from './components/Navbar';
 import EmployeeDirectory from './components/EmployeeDirectory';
 import EmployeeDetails from './components/EmployeeDetails';
 import EmployeeCreate from './components/EmployeeCreate';
+import UpcomingRetirement from './components/UpcomingRetirement';
+
 
 const App = () => {
   return (
@@ -13,6 +15,7 @@ const App = () => {
         <Route path="/" element={<EmployeeDirectory />} />
         <Route path="/create" element={<EmployeeCreate />} />
         <Route path="/employee/:id" element={<EmployeeDetails />} />
+        <Route path="/upcoming-retirement" element={<UpcomingRetirement />} />
       </Routes>
     </Router>
   );
