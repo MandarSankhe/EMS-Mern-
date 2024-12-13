@@ -75,17 +75,18 @@ const UpcomingRetirement = () => {
       <div className="bg-primary text-white py-5 mb-4 shadow">
         <Container className="text-center">
           <h1 className="fw-bold">Upcoming Retirements</h1>
-          <p className="text-muted">Monitor employees retiring in the next 6 months</p>
+          <p className="lead">Monitor employees retiring in the next 6 months</p>
         </Container>
       </div>
 
       {/* Main Content Section */}
       <Container>
-        <div className="mb-3">
-          <Form.Label htmlFor="employeeTypeFilter">Filter by Employee Type:</Form.Label>
+        <div className="mb-3 d-flex align-items-center">
+          <Form.Label htmlFor="employeeTypeFilter" className="filter-column-1">Filter Employees</Form.Label>
           <Form.Select 
             id="employeeTypeFilter" 
             onChange={handleEmployeeTypeFilterChange}
+            className="w-50 filter-column-2"
           >
             <option value="All">All</option>
             <option value="FullTime">Full Time</option>
@@ -119,6 +120,7 @@ const UpcomingRetirement = () => {
         )}
 
         <Button variant="primary" className="mt-3" onClick={() => navigate('/')}>
+          <img src="../arrow-left.png" className="nav-logo"/>
           Back to Employees
         </Button>
       </Container>

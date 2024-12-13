@@ -70,7 +70,7 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
 
   return (
     <div className="table-responsive">
-      <Table striped hover bordered className="mt-4">
+      <Table striped hover bordered className="mt-4 text-center">
         <thead className="table-dark">
           <tr>
             <th>First Name</th>
@@ -103,13 +103,13 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
                 <td>{employee.title}</td>
                 <td>{employee.department}</td>
                 <td>{employee.employeeType}</td>
-                <td>
+                <td className="align-middle">
                   <Badge bg={employee.currentStatus ? 'success' : 'danger'}>
                     {employee.currentStatus ? 'Working' : 'Retired'}
                   </Badge>
                 </td>
                 <td>
-                  <div className="d-flex">
+                  <div className="d-flex justify-content-center">
                     <Link
                       to={`/employee/${employee.id}`}
                       className="me-2 btn btn-primary btn-sm"

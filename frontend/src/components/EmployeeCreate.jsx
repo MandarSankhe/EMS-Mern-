@@ -90,7 +90,7 @@ function EmployeeCreate() {
   return (
     <Container className="mt-5">
       <div className="text-center mb-4">
-        <h2>Create New Employee</h2>
+        <h2 className="bold-text">Create New Employee</h2>
         <p className="text-muted">Fill in the details below to add a new employee.</p>
       </div>
 
@@ -99,6 +99,7 @@ function EmployeeCreate() {
         className="mb-4"
         onClick={() => navigate('/')}
       >
+        <img src="../arrow-left.png" className="nav-logo"/>
         Back to Home
       </Button>
 
@@ -107,7 +108,7 @@ function EmployeeCreate() {
           <Row className="mb-3">
             <Col md={6}>
               <Form.Group>
-                <Form.Label>First Name</Form.Label>
+                <Form.Label className="bold-text">First Name</Form.Label>
                 <Form.Control
                   type="text"
                   name="firstName"
@@ -123,7 +124,7 @@ function EmployeeCreate() {
             </Col>
             <Col md={6}>
               <Form.Group>
-                <Form.Label>Last Name</Form.Label>
+                <Form.Label className="bold-text">Last Name</Form.Label>
                 <Form.Control
                   type="text"
                   name="lastName"
@@ -142,7 +143,7 @@ function EmployeeCreate() {
           <Row className="mb-3">
             <Col md={6}>
               <Form.Group>
-                <Form.Label>Date of Birth</Form.Label>
+                <Form.Label className="bold-text">Date of Birth</Form.Label>
                 <Form.Control
                   type="date"
                   name="dateOfBirth"
@@ -157,7 +158,7 @@ function EmployeeCreate() {
             </Col>
             <Col md={6}>
               <Form.Group>
-                <Form.Label>Date of Joining</Form.Label>
+                <Form.Label className="bold-text">Date of Joining</Form.Label>
                 <Form.Control
                   type="date"
                   name="dateOfJoining"
@@ -175,7 +176,7 @@ function EmployeeCreate() {
           <Row className="mb-3">
             <Col md={6}>
               <Form.Group>
-                <Form.Label>Title</Form.Label>
+                <Form.Label className="bold-text">Title</Form.Label>
                 <Form.Select
                   name="title"
                   value={employeeData.title}
@@ -190,7 +191,7 @@ function EmployeeCreate() {
             </Col>
             <Col md={6}>
               <Form.Group>
-                <Form.Label>Department</Form.Label>
+                <Form.Label className="bold-text">Department</Form.Label>
                 <Form.Select
                   name="department"
                   value={employeeData.department}
@@ -208,7 +209,7 @@ function EmployeeCreate() {
           <Row className="mb-3">
             <Col md={6}>
               <Form.Group>
-                <Form.Label>Employee Type</Form.Label>
+                <Form.Label className="bold-text">Employee Type</Form.Label>
                 <Form.Select
                   name="employeeType"
                   value={employeeData.employeeType}
@@ -223,9 +224,9 @@ function EmployeeCreate() {
             </Col>
           </Row>
 
-          <div className="text-center">
+          <div className="text-center form-button">
             <Button type="submit" variant="primary" size="lg">
-              Create Employee
+              Create
             </Button>
           </div>
         </Form>

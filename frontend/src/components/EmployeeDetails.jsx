@@ -161,11 +161,14 @@ const EmployeeDetails = () => {
   return (
     <Container className="mt-5">
       <div className="mb-4">
-        <Button variant="secondary" onClick={() => navigate('/')}>Back to Home</Button>
+        <Button variant="secondary" onClick={() => navigate('/')}>
+          <img src="../arrow-left.png" className="nav-logo"/>
+          Back to Home
+        </Button>
       </div>
       <Card className="shadow-lg">
         <Card.Header className="bg-primary text-white text-center">
-          <h2>{employee.firstName} {employee.lastName}</h2>
+          <h2 className="employee-header">{employee.firstName} {employee.lastName}</h2>
           <p>{employee.title}</p>
         </Card.Header>
         <Card.Body>
@@ -218,8 +221,8 @@ const EmployeeDetails = () => {
                   </Form.Group>
                 </Col>
               </Row>
-              <Button variant="success" className="me-2" onClick={handleSave}>Save</Button>
-              <Button variant="secondary" onClick={() => setIsEditing(false)}>Cancel</Button>
+              <Button variant="success" className="me-2 edit-buttons" onClick={handleSave}>Save</Button>
+              <Button variant="secondary" className="edit-buttons" onClick={() => setIsEditing(false)}>Cancel</Button>
             </Form>
           ) : (
             <div>
@@ -242,7 +245,7 @@ const EmployeeDetails = () => {
                   )}
                 </Col>
               </Row>
-              <div className="d-flex justify-content-center mt-4">
+              <div className="d-flex justify-content-center mt-4 form-button">
                 <Button variant="warning" className="me-3"  size="lg" onClick={handleEdit}>Edit</Button>
               </div>
             </div>
