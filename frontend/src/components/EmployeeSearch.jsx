@@ -64,12 +64,12 @@ const EmployeeSearch = ({ setEmployees }) => {
   };
 
   return (
-    <Container className="mb-4">
-      <h2>Filter Employees</h2>
+    <Container className="mb-4 d-flex align-items-center">
+      <h6 className="filter-column-1">Filter Employees</h6>
       <Form.Select
         value={selectedType}
         onChange={handleTypeChange}
-        className="w-50 mx-auto"
+        className="w-50 filter-column-2"
       >
         <option value="">All</option>
         <option value="FullTime">Full-Time</option>

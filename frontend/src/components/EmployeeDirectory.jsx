@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import EmployeeTable from './EmployeeTable';
-import EmployeeSearch from './EmployeeSearch'; // Assuming you have this component for filtering employees
+import EmployeeSearch from './EmployeeSearch';
 
 const EmployeeDirectory = () => {
   const [employees, setEmployees] = useState([]);
