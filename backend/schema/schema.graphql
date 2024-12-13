@@ -36,7 +36,13 @@ type Employee {
   currentStatus: Boolean!
   dateOfBirth: String!
   retirementDate: String!
-  monthsUntilRetirement: String!
+  timeUntilRetirement: TimeUntilRetirement
+}
+
+type TimeUntilRetirement {
+  years: Int
+  months: Int
+  days: Int
 }
 
 type Query {

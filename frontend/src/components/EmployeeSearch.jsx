@@ -32,7 +32,8 @@ const EmployeeSearch = ({ setEmployees }) => {
               title
               department
               employeeType
-              currentStatus
+              currentStatus,
+              dateOfBirth
             }
           }
         `,

@@ -15,12 +15,50 @@ const resolvers = {
     },
     employee: async (_, { id }) => {
       try {
-        return await EmployeeModel.findById(id);
+        // Fetch the employee by ID
+        const employee = await EmployeeModel.findById(id);
+    
+        if (!employee) {
+          throw new Error('Employee not found');
+        }
+    
+        // Calculate Retirement Details
+        const birthDate = new Date(employee.dateOfBirth);
+        const retirementDate = new Date(
+          birthDate.getFullYear() + 65,
+          birthDate.getMonth(),
+          birthDate.getDate()
+        );
+    
+        const today = new Date();
+        const timeDiff = retirementDate - today;
+    
+        const yearsLeft = Math.floor(timeDiff / (365.25 * 24 * 60 * 60 * 1000));
+        const monthsLeft = Math.floor(
+          (timeDiff % (365.25 * 24 * 60 * 60 * 1000)) / (30 * 24 * 60 * 60 * 1000)
+        );
+        const daysLeft = Math.floor(
+          (timeDiff % (30 * 24 * 60 * 60 * 1000)) / (24 * 60 * 60 * 1000)
+        );
+    
+        // Return the result as a single object under the `employees` key
+        return {
+          employees: {
+            ...employee.toObject(),
+            retirementDate: retirementDate.toISOString().split('T')[0],
+            timeUntilRetirement: {
+              years: yearsLeft >= 0 ? yearsLeft : 0,
+              months: monthsLeft >= 0 ? monthsLeft : 0,
+              days: daysLeft >= 0 ? daysLeft : 0,
+            },
+          },
+        };
       } catch (error) {
-        console.error('Error fetching employee by ID:', error);
-        throw new Error('Failed to fetch employee');
+        console.error('Error fetching employee details:', error);
+        throw new Error('Failed to fetch employee details');
       }
     },
+        
     employeesRetiring: async (_, { withinMonths = 6, employeeType }) => {
       console.log('test', { employeeType });
       try {

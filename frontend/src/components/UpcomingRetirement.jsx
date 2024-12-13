@@ -32,7 +32,7 @@ const UpcomingRetirement = () => {
                 employeeType
                 currentStatus
                 retirementDate
-                monthsUntilRetirement,
+                timeUntilRetirement,
                 dateOfJoining
             }
         }
@@ -106,7 +106,7 @@ const UpcomingRetirement = () => {
             showLink={false} 
             additionalColumns={[
               { header: 'Retirement Date', key: 'retirementDate' },
-              { header: 'Months Until Retirement', key: 'monthsUntilRetirement' },
+              { header: 'Months Until Retirement', key: 'timeUntilRetirement' },
             ]}
           />
         ) : (

@@ -32,7 +32,13 @@ const EmployeeDetails = () => {
               department
               employeeType
               currentStatus,
-              dateOfBirth
+              dateOfBirth,
+              retirementDate,
+              timeUntilRetirement {
+                years
+                months
+                days
+              }
             }
           }
         `,
@@ -110,17 +116,7 @@ const EmployeeDetails = () => {
         navigate('/'); // Redirect after deletion
       });
   };
-
-  if (!employee)
-    return (
-      <div className="text-center mt-5">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-        <h5 className="mt-3">Loading Employee Details...</h5>
-      </div>
-    );
-
+  
   return (
     <div className="container mt-5">
       {/* Back to Home Button */}
